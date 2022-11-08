@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import AudioToolbox
 
 struct ContentView: View {
     // MARK: Properties
@@ -14,6 +15,10 @@ struct ContentView: View {
     @State private var password = ""
     @State private var editingEmailTextfield = false
     @State private var editingPasswordTextfield = false
+    @State private var emailIconBounce = false
+    @State private var passwordIconBounce = false
+    
+    private let generator = UISelectionFeedbackGenerator()
     
     // MARK: View
     var body: some View {
@@ -37,13 +42,24 @@ struct ContentView: View {
                     // MARK: - Inputs
                     HStack(spacing: 12) {
                         TextfieldIcon(iconName: "envelope.open.fill", currentlyEditing: $editingEmailTextfield)
-//                        Image(systemName: "envelope.open.fill")
-//                            .foregroundColor(.white)
+                            /// Permite ejecutar la animación
+                            .scaleEffect(emailIconBounce ? 1.2 : 1.0)
                         
-//                        TextField("Email", text: $email)
                         TextField("Email", text: $email) { isEditing in
                             editingEmailTextfield = isEditing
                             editingPasswordTextfield = false
+                            generator.selectionChanged()
+                            /// Animación de bounce en el icono
+                            if isEditing {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.4, blendDuration: 0.5)) {
+                                    emailIconBounce.toggle()
+                                }
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.4, blendDuration: 0.5)) {
+                                    emailIconBounce.toggle()
+                                }
+                            }
                         }
                             .colorScheme(.dark)
                             .foregroundColor(Color.white.opacity(0.6))
@@ -66,15 +82,15 @@ struct ContentView: View {
                     
                     HStack(spacing: 12) {
                         TextfieldIcon(iconName: "key.fill", currentlyEditing: $editingPasswordTextfield)
-//                        Image(systemName: "key.fill")
-//                            .foregroundColor(.white)
+                            .scaleEffect(passwordIconBounce ? 1.2 : 1.0)
                         
-                        SecureField("Password", text: $email)
+                        SecureField("Password", text: $password)
                             .colorScheme(.dark)
                             .foregroundColor(Color.white.opacity(0.6))
                             // Propiedades del teclado
                             .autocapitalization(.none)
                             .textContentType(.password)
+                        
                     } // HStack
                     .frame(height: 52)
                     .overlay {
@@ -87,47 +103,24 @@ struct ContentView: View {
                         .cornerRadius(16)
                         .opacity(0.7)
                     )
+                    /// La detección y efectos se hacen aquí pues Secure no acepta closure
                     .onTapGesture {
                         editingPasswordTextfield = true
                         editingEmailTextfield = false
+                        generator.selectionChanged()
+                        if editingPasswordTextfield {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.4, blendDuration: 0.5)) {
+                                passwordIconBounce.toggle()
+                            }
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.4, blendDuration: 0.5)) {
+                                passwordIconBounce.toggle()
+                            }
+                        }
                     }
                     
                     GradientButton()
-                    
-//                    Button {
-//                        print("Registrarse")
-//                    } label: {
-//                        // Text("Registrarse")
-//                        GeometryReader() { geometry in
-//                            ZStack {
-//                                AngularGradient(gradient: Gradient(colors: [Color.red, Color.blue]), center: .center, angle: .degrees(0))
-//                                    .blendMode(.overlay)
-//                                    .blur(radius: 8.0)
-//                                    .mask(
-//                                        RoundedRectangle(cornerRadius: 16.0)
-//                                            .frame(height: 50)
-//                                            .frame(maxWidth: geometry.size.width - 16)
-//                                            .blur(radius: 8.0)
-//                                    )
-//
-//                                GradientText(text: "Registrarse")
-//                                    .font(.headline)
-//                                    .frame(width: geometry.size.width - 16)
-//                                    .frame(height: 50)
-//                                    .background(
-//                                        Color("tertiaryBackground")
-//                                            .opacity(0.8)
-//                                    )
-//                                    .overlay(
-//                                    RoundedRectangle(cornerRadius: 16)
-//                                        .stroke(Color.white, lineWidth: 1.8)
-//                                        .blendMode(.normal)
-//                                        .opacity(0.6)
-//                                    )
-//                                    .cornerRadius(16)
-//                            }
-//                        }
-//                    } // Button Registrarse
                     
                     // MARK: - Sección bottom
                     Text("Al registrarse, acepta nuestros Términos y Condiciones y Política de Privacidad")
@@ -150,13 +143,6 @@ struct ContentView: View {
                                 GradientText(text: "Ingresar")
                                     .font(.footnote)
                                     .bold()
-                                
-//                                Text("Ingresar")
-//                                    .font(.footnote)
-//                                    .bold()
-//                                    .gradientForeground(colors:
-//                                                            [Color("pink-gradient-1"),
-//                                                             Color("pink-gradient-2")])
                             } // HStack
                         } // Button
                     } // VStack

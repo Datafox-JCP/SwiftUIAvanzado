@@ -21,12 +21,12 @@ struct GradientText: View {
     }
 }
 
-    // MARK: Extension
+// MARK: Extension
 
-    extension View {
-        public func gradientForeground(colors: [Color]) -> some View {
-            self
-                .overlay(LinearGradient(gradient: Gradient(colors: colors), startPoint: .topLeading, endPoint: .bottomTrailing)) // Va de arriba izquierda a abajo derecha
-                .mask(self)
-        }
+extension View {
+    public func gradientForeground(colors: [Color]) -> some View {
+        self
+            .overlay(LinearGradient(gradient: Gradient(colors: colors), startPoint: .topLeading, endPoint: .bottomTrailing)) // Va de arriba izquierda a abajo derecha
+            .mask(self)
     }
+}
