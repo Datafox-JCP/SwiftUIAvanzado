@@ -15,6 +15,9 @@
 		C64685522919EE4D0068A9EA /* SwiftUIAvanzado.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C64685502919EE4D0068A9EA /* SwiftUIAvanzado.xcdatamodeld */; };
 		C646855C2919F19D0068A9EA /* VisualEffectBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = C646855A2919F19D0068A9EA /* VisualEffectBlur.swift */; };
 		C646855D2919F19D0068A9EA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C646855B2919F19D0068A9EA /* ImagePicker.swift */; };
+		C6BECD84291A99D400831A5E /* GradientText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BECD83291A99D400831A5E /* GradientText.swift */; };
+		C6BECD86291A9A4100831A5E /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BECD85291A9A4100831A5E /* GradientButton.swift */; };
+		C6BECD88291A9B1800831A5E /* TextfieldIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BECD87291A9B1800831A5E /* TextfieldIcon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		C64685532919EE4D0068A9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C646855A2919F19D0068A9EA /* VisualEffectBlur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffectBlur.swift; sourceTree = "<group>"; };
 		C646855B2919F19D0068A9EA /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		C6BECD83291A99D400831A5E /* GradientText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientText.swift; sourceTree = "<group>"; };
+		C6BECD85291A9A4100831A5E /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
+		C6BECD87291A9B1800831A5E /* TextfieldIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldIcon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +66,7 @@
 		C64685442919EE4B0068A9EA /* SwiftUIAvanzado */ = {
 			isa = PBXGroup;
 			children = (
+				C6BECD82291A99C500831A5E /* Views */,
 				C64685592919F19D0068A9EA /* Helpers */,
 				C64685452919EE4B0068A9EA /* SwiftUIAvanzadoApp.swift */,
 				C64685472919EE4B0068A9EA /* ContentView.swift */,
@@ -87,6 +94,16 @@
 				C646855B2919F19D0068A9EA /* ImagePicker.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		C6BECD82291A99C500831A5E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C6BECD83291A99D400831A5E /* GradientText.swift */,
+				C6BECD85291A9A4100831A5E /* GradientButton.swift */,
+				C6BECD87291A9B1800831A5E /* TextfieldIcon.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,6 +177,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C646855C2919F19D0068A9EA /* VisualEffectBlur.swift in Sources */,
+				C6BECD86291A9A4100831A5E /* GradientButton.swift in Sources */,
+				C6BECD84291A99D400831A5E /* GradientText.swift in Sources */,
+				C6BECD88291A9B1800831A5E /* TextfieldIcon.swift in Sources */,
 				C646854F2919EE4D0068A9EA /* Persistence.swift in Sources */,
 				C64685482919EE4B0068A9EA /* ContentView.swift in Sources */,
 				C646855D2919F19D0068A9EA /* ImagePicker.swift in Sources */,
