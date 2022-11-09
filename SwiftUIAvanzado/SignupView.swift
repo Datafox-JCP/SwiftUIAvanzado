@@ -9,6 +9,8 @@ import SwiftUI
 import CoreData
 import AudioToolbox
 import FirebaseAuth
+import AuthenticationServices
+import CryptoKit
 
 struct SignupView: View {
         // MARK: Properties
@@ -21,6 +23,12 @@ struct SignupView: View {
     @State private var showProfileView = false
     @State private var signupToggle = true
     @State private var rotationAngle = 0.0
+    @State private var signInWithAppleObject = SigInWithAppleObject()
+    @State private var fadeToggle = true
+    
+    @State private var showAlertView = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
     
     private let generator = UISelectionFeedbackGenerator()
     
@@ -31,6 +39,12 @@ struct SignupView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .edgesIgnoringSafeArea(.all)
+                .opacity(fadeToggle ? 1.0 : 0.0)
+            
+            // Para la transición del fondo
+            Color("secondaryBackground")
+                .edgesIgnoringSafeArea(.all)
+                .opacity(fadeToggle ? 0.0 : 1.0)
             
             VStack {
                 VStack(alignment: .leading, spacing: 16) {
@@ -43,7 +57,7 @@ struct SignupView: View {
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.6))
                     
-                        // MARK: - Inputs
+                        // MARK: - Input Email
                     HStack(spacing: 12) {
                         TextfieldIcon(iconName: "envelope.open.fill", currentlyEditing: $editingEmailTextfield)
                             /// Permite ejecutar la animación
@@ -84,6 +98,7 @@ struct SignupView: View {
                             .opacity(0.7)
                     )
                     
+                        // MARK: - Input Password
                     HStack(spacing: 12) {
                         TextfieldIcon(iconName: "key.fill", currentlyEditing: $editingPasswordTextfield)
                             .scaleEffect(passwordIconBounce ? 1.2 : 1.0)
@@ -124,6 +139,7 @@ struct SignupView: View {
                         }
                     }
                     
+                        // MARK: - Button Crear cuenta
                     GradientButton(buttonTitle: signupToggle ? "Crear Cuenta" : "Ingresar") {
                         generator.selectionChanged()
                         signup()
@@ -137,7 +153,7 @@ struct SignupView: View {
                             }
                     }
                     
-                        // MARK: - Sección bottom
+                        // MARK: - Sección para el cambio de pantalla
                     if signupToggle {
                         Text("Al registrarse, acepta nuestros Términos y Condiciones y Política de Privacidad")
                             .font(.footnote)
@@ -151,7 +167,8 @@ struct SignupView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         if !signupToggle {
                             Button {
-                                print(" Enviar correo para restaurar contraseña")
+//                                print(" Enviar correo para restaurar contraseña")
+                                
                             } label: {
                                 HStack(spacing: 4) {
                                     Text("¿Olvidó su contraseña?")
@@ -163,9 +180,32 @@ struct SignupView: View {
                                         .bold()
                                 } // HStack
                             } // Button
+                            
+                            // MARK: SigIn con Apple
+                            Rectangle()
+                                .frame(height: 1)
+                                .foregroundColor(Color.white.opacity(0.2))
+                            
+                            Button(action: {
+                                print("Sign in with Apple")
+                                // signInWithAppleObject.signInWithApple()
+                            },  label: {
+                                SignInWithAppleButton()
+                                    .frame(height: 50)
+                                    .cornerRadius(16)
+                            })
                         } // Condición
                         
+                            // MARK: - Button registrarse o ingresar
                         Button {
+                            withAnimation(.easeInOut(duration: 0.35)) {
+                                fadeToggle.toggle()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                                    withAnimation(.easeInOut(duration: 0.35)) {
+                                        self.fadeToggle.toggle()
+                                    }
+                                }
+                            }
                             withAnimation(.easeOut(duration: 0.7)) {
                                 signupToggle.toggle()
                                 /// Cambiar el ángulo
@@ -183,7 +223,6 @@ struct SignupView: View {
                             } // HStack
                         } // Button
                     } // VStack
-                    
                 } // VStack contenido
                 .padding(20)
             } // VStack Card
@@ -204,6 +243,10 @@ struct SignupView: View {
                 Angle(degrees: self.rotationAngle),
                 axis:(x: 0.0, y:1.0, z: 0.0)
             )
+            // Presenta Alert sobre el SignIn y Password
+            .alert(isPresented: $showAlertView) {
+                Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .cancel())
+            }
         } // ZStack
           //        .fullScreenCover(isPresented: $showProfileView) {
           //            ProfileView()
@@ -215,7 +258,11 @@ struct SignupView: View {
         if signupToggle {
             Auth.auth().createUser(withEmail: email, password: password) { result, error in
                 guard error == nil else {
-                    print(error!.localizedDescription)
+                    /// Envía la Alert
+                    alertTitle = "Opps!"
+                    alertMessage = (error!.localizedDescription)
+                    showAlertView.toggle()
+                    //print(error!.localizedDescription)
                     return
                 }
                 print("Usuario registrado")
@@ -223,11 +270,32 @@ struct SignupView: View {
         } else {
             Auth.auth().signIn(withEmail: email, password: password) { result, error in
                 guard error == nil else {
-                    print(error!.localizedDescription)
+                    /// Envía la Alert
+                    alertTitle = "Opps!"
+                    alertMessage = (error!.localizedDescription)
+                    showAlertView.toggle()
+                    //print(error!.localizedDescription)
                     return
                 }
                 print("Usuario registrado")
             }
+        }
+    }
+    
+    func sendPasswordResetEmail() {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            guard error == nil else {
+                /// Envía la Alert
+                alertTitle = "Opps!"
+                alertMessage = (error!.localizedDescription)
+                showAlertView.toggle()
+                //print(error!.localizedDescription)
+                return
+            }
+            alertTitle = "Se ha enviado correo para restaurar su contraseña"
+            alertMessage = "Verifique su correo para encontrar instrucciones para restaurar su contraseña"
+            showAlertView.toggle()
+            // print("Correo para resetear password enviado")
         }
     }
 }
