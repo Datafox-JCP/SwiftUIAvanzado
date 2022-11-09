@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		C6109BB0291B3654008DD9E8 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C6109BAF291B3654008DD9E8 /* FirebaseAuth */; };
 		C6109BB2291B3705008DD9E8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6109BB1291B3704008DD9E8 /* GoogleService-Info.plist */; };
+		C6109BB4291B4024008DD9E8 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6109BB3291B4024008DD9E8 /* ProfileView.swift */; };
 		C64685462919EE4B0068A9EA /* SwiftUIAvanzadoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64685452919EE4B0068A9EA /* SwiftUIAvanzadoApp.swift */; };
-		C64685482919EE4B0068A9EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64685472919EE4B0068A9EA /* ContentView.swift */; };
+		C64685482919EE4B0068A9EA /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64685472919EE4B0068A9EA /* SignupView.swift */; };
 		C646854A2919EE4D0068A9EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C64685492919EE4D0068A9EA /* Assets.xcassets */; };
 		C646854D2919EE4D0068A9EA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C646854C2919EE4D0068A9EA /* Preview Assets.xcassets */; };
 		C646854F2919EE4D0068A9EA /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C646854E2919EE4D0068A9EA /* Persistence.swift */; };
@@ -24,9 +25,10 @@
 
 /* Begin PBXFileReference section */
 		C6109BB1291B3704008DD9E8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C6109BB3291B4024008DD9E8 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		C64685422919EE4B0068A9EA /* SwiftUIAvanzado.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIAvanzado.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C64685452919EE4B0068A9EA /* SwiftUIAvanzadoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIAvanzadoApp.swift; sourceTree = "<group>"; };
-		C64685472919EE4B0068A9EA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C64685472919EE4B0068A9EA /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		C64685492919EE4D0068A9EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C646854C2919EE4D0068A9EA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C646854E2919EE4D0068A9EA /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -74,7 +76,8 @@
 				C64685592919F19D0068A9EA /* Helpers */,
 				C64685452919EE4B0068A9EA /* SwiftUIAvanzadoApp.swift */,
 				C6109BB1291B3704008DD9E8 /* GoogleService-Info.plist */,
-				C64685472919EE4B0068A9EA /* ContentView.swift */,
+				C64685472919EE4B0068A9EA /* SignupView.swift */,
+				C6109BB3291B4024008DD9E8 /* ProfileView.swift */,
 				C64685492919EE4D0068A9EA /* Assets.xcassets */,
 				C646854E2919EE4D0068A9EA /* Persistence.swift */,
 				C64685532919EE4D0068A9EA /* Info.plist */,
@@ -190,10 +193,11 @@
 			files = (
 				C646855C2919F19D0068A9EA /* VisualEffectBlur.swift in Sources */,
 				C6BECD86291A9A4100831A5E /* GradientButton.swift in Sources */,
+				C6109BB4291B4024008DD9E8 /* ProfileView.swift in Sources */,
 				C6BECD84291A99D400831A5E /* GradientText.swift in Sources */,
 				C6BECD88291A9B1800831A5E /* TextfieldIcon.swift in Sources */,
 				C646854F2919EE4D0068A9EA /* Persistence.swift in Sources */,
-				C64685482919EE4B0068A9EA /* ContentView.swift in Sources */,
+				C64685482919EE4B0068A9EA /* SignupView.swift in Sources */,
 				C646855D2919F19D0068A9EA /* ImagePicker.swift in Sources */,
 				C64685462919EE4B0068A9EA /* SwiftUIAvanzadoApp.swift in Sources */,
 				C64685522919EE4D0068A9EA /* SwiftUIAvanzado.xcdatamodeld in Sources */,

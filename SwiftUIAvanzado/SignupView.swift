@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  SignupView.swift
 //  SwiftUIAvanzado
 //
 //  Created by Juan Hernandez Pazos on 07/11/22.
@@ -8,8 +8,9 @@
 import SwiftUI
 import CoreData
 import AudioToolbox
+import FirebaseAuth
 
-struct ContentView: View {
+struct SignupView: View {
     // MARK: Properties
     @State private var email = ""
     @State private var password = ""
@@ -17,6 +18,7 @@ struct ContentView: View {
     @State private var editingPasswordTextfield = false
     @State private var emailIconBounce = false
     @State private var passwordIconBounce = false
+    @State private var showProfileView = false
     
     private let generator = UISelectionFeedbackGenerator()
     
@@ -120,7 +122,18 @@ struct ContentView: View {
                         }
                     }
                     
-                    GradientButton()
+                    GradientButton(buttonTitle: "Crear Cuenta") {
+                        generator.selectionChanged()
+                        signup()
+                    }
+                    .onAppear() {
+                        Auth.auth()
+                            .addStateDidChangeListener { auth, user in
+                                if user != nil {
+                                    showProfileView.toggle()
+                                }
+                            }
+                    }
                     
                     // MARK: - Sección bottom
                     Text("Al registrarse, acepta nuestros Términos y Condiciones y Política de Privacidad")
@@ -160,13 +173,27 @@ struct ContentView: View {
             .cornerRadius(30)
             .padding(.horizontal)
         } // ZStack
+        .fullScreenCover(isPresented: $showProfileView) {
+            ProfileView()
+        }
+    }
+    
+    // MARK: - Functions
+    func signup() {
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                return
+            }
+            print("Usuario registrado")
+        }
     }
 }
 
 // MARK: Preview
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        SignupView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
 
