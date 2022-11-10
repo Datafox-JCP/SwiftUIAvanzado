@@ -41,7 +41,7 @@ struct SignupView: View {
                 .edgesIgnoringSafeArea(.all)
                 .opacity(fadeToggle ? 1.0 : 0.0)
             
-            // Para la transición del fondo
+                // Para la transición del fondo
             Color("secondaryBackground")
                 .edgesIgnoringSafeArea(.all)
                 .opacity(fadeToggle ? 0.0 : 1.0)
@@ -167,7 +167,7 @@ struct SignupView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         if !signupToggle {
                             Button {
-//                                print(" Enviar correo para restaurar contraseña")
+                                    //                                print(" Enviar correo para restaurar contraseña")
                                 
                             } label: {
                                 HStack(spacing: 4) {
@@ -181,14 +181,14 @@ struct SignupView: View {
                                 } // HStack
                             } // Button
                             
-                            // MARK: SigIn con Apple
+                                // MARK: SigIn con Apple
                             Rectangle()
                                 .frame(height: 1)
                                 .foregroundColor(Color.white.opacity(0.2))
                             
                             Button(action: {
                                 print("Sign in with Apple")
-                                // signInWithAppleObject.signInWithApple()
+                                    // signInWithAppleObject.signInWithApple()
                             },  label: {
                                 SignInWithAppleButton()
                                     .frame(height: 50)
@@ -208,7 +208,7 @@ struct SignupView: View {
                             }
                             withAnimation(.easeOut(duration: 0.7)) {
                                 signupToggle.toggle()
-                                /// Cambiar el ángulo
+                                    /// Cambiar el ángulo
                                 self.rotationAngle += 180
                             }
                         } label: {
@@ -243,14 +243,14 @@ struct SignupView: View {
                 Angle(degrees: self.rotationAngle),
                 axis:(x: 0.0, y:1.0, z: 0.0)
             )
-            // Presenta Alert sobre el SignIn y Password
+                // Presenta Alert sobre el SignIn y Password
             .alert(isPresented: $showAlertView) {
                 Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .cancel())
             }
         } // ZStack
-          //        .fullScreenCover(isPresented: $showProfileView) {
-          //            ProfileView()
-          //        }
+        .fullScreenCover(isPresented: $showProfileView) {
+            ProfileView()
+        }
     }
     
         // MARK: - Functions
@@ -258,11 +258,11 @@ struct SignupView: View {
         if signupToggle {
             Auth.auth().createUser(withEmail: email, password: password) { result, error in
                 guard error == nil else {
-                    /// Envía la Alert
+                        /// Envía la Alert
                     alertTitle = "Opps!"
                     alertMessage = (error!.localizedDescription)
                     showAlertView.toggle()
-                    //print(error!.localizedDescription)
+                        //print(error!.localizedDescription)
                     return
                 }
                 print("Usuario registrado")
@@ -270,11 +270,11 @@ struct SignupView: View {
         } else {
             Auth.auth().signIn(withEmail: email, password: password) { result, error in
                 guard error == nil else {
-                    /// Envía la Alert
+                        /// Envía la Alert
                     alertTitle = "Opps!"
                     alertMessage = (error!.localizedDescription)
                     showAlertView.toggle()
-                    //print(error!.localizedDescription)
+                        //print(error!.localizedDescription)
                     return
                 }
                 print("Usuario registrado")
@@ -285,17 +285,17 @@ struct SignupView: View {
     func sendPasswordResetEmail() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             guard error == nil else {
-                /// Envía la Alert
+                    /// Envía la Alert
                 alertTitle = "Opps!"
                 alertMessage = (error!.localizedDescription)
                 showAlertView.toggle()
-                //print(error!.localizedDescription)
+                    //print(error!.localizedDescription)
                 return
             }
             alertTitle = "Se ha enviado correo para restaurar su contraseña"
             alertMessage = "Verifique su correo para encontrar instrucciones para restaurar su contraseña"
             showAlertView.toggle()
-            // print("Correo para resetear password enviado")
+                // print("Correo para resetear password enviado")
         }
     }
 }
