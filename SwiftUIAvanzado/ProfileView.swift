@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ProfileView: View {
     // MARK: Properties
-    
+    @Environment(\.dismiss) private var dismiss
     
     // MARK: View
     var body: some View {
@@ -23,16 +24,19 @@ struct ProfileView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(spacing: 16) {
                         // Foto de perfil
-                        ZStack {
-                            Circle()
-                                .foregroundColor(Color("pink-gradient-1"))
-                                .frame(width: 66, height: 66, alignment: .center)
-                            
-                            Image(systemName: "person.fill")
-                                .foregroundColor(.white)
-                                .font(.system(size: 25, weight: .medium, design: .rounded))
-                        } // ZStack foto
-                        .frame(width: 66, height: 66, alignment: .center)
+//                        ZStack {
+//                            Circle()
+//                                .foregroundColor(Color("pink-gradient-1"))
+//                                .frame(width: 66, height: 66, alignment: .center)
+//
+//                            Image(systemName: "person.fill")
+//                                .foregroundColor(.white)
+//                                .font(.system(size: 25, weight: .medium, design: .rounded))
+//                        } // ZStack foto
+//                        .frame(width: 66, height: 66, alignment: .center)
+                        
+                        GradiantProfilePictureView(profilePicture: UIImage(named: "Profile")!)
+                            .frame(width: 66, height: 66)
                         
                         VStack(alignment: .leading) {
                             Text("Juan Carlos Pazos")
@@ -119,7 +123,7 @@ struct ProfileView: View {
                 Spacer()
                 
                 Button {
-                    print ("Cerrar sesión")
+                    signout()
                 } label: {
                     Image(systemName: "arrow.turn.up.forward.iphone.fill")
                         .foregroundColor(.white)
@@ -141,6 +145,18 @@ struct ProfileView: View {
         } // ZStack background
         .colorScheme(.dark)
     }
+    
+    // MARK: Functions
+    func signout() {
+        do {
+            try Auth.auth().signOut()
+            dismiss()
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    
 }
 
 struct ProfileView_Previews: PreviewProvider {
