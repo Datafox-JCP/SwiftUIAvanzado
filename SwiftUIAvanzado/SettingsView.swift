@@ -6,9 +6,13 @@
     //
 
 import SwiftUI
+import FirebaseAuth
+import CoreData
 
 struct SettingsView: View {
         // MARK: Properties
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var editingNameTextfield = false
     @State private var editingTwitterTextfield = false
     @State private var editingSiteTextfield = false
@@ -27,7 +31,17 @@ struct SettingsView: View {
     @State private var showImagePicker = false
     @State private var inputImage: UIImage?
     
-    private let geneator = UISelectionFeedbackGenerator()
+    @State private var showAlertView = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    
+    private let generator = UISelectionFeedbackGenerator()
+    
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.userSince, ascending: true)], predicate: NSPredicate(format: "userID = %@", Auth.auth().currentUser!.uid), animation: .default)
+    private var savedAccounts: FetchedResults<Account>
+    
+    @State private var currentAccount: Account?
     
         // MARK: View
     var body: some View {
@@ -89,8 +103,27 @@ struct SettingsView: View {
                 
                     // Button Guardar
                 GradientButton(buttonTitle: "Guardar cambios") {
-                        // Guardar cambios en CoreDta
-                    geneator.selectionChanged()
+                        // Guardar cambios en CoreData
+                    generator.selectionChanged()
+                    
+                    currentAccount?.name = self.name
+                    currentAccount?.bio = self.bio
+                    currentAccount?.twitter = self.twitter
+                    currentAccount?.website = self.site
+                    currentAccount?.profileImage = self.inputImage?.pngData()
+                    
+                    do {
+                        try viewContext.save()
+                        // Presentar alerta
+                        alertTitle = "Cambios guardados"
+                        alertMessage = "Se han guardado los cambios"
+                        showAlertView.toggle()
+                    } catch let error {
+                        // Presentar error
+                        alertTitle = "Ha ocurrido un error"
+                        alertMessage = error.localizedDescription
+                        showAlertView.toggle()
+                    }
                 }
                 
                 Spacer()
@@ -105,7 +138,24 @@ struct SettingsView: View {
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(image: self.$inputImage)
         }
+        .onAppear() {
+            currentAccount = savedAccounts.first!
+            self.name = currentAccount?.name ?? ""
+            self.bio = currentAccount?.bio ?? ""
+            self.twitter = currentAccount?.twitter ?? ""
+            self.site = currentAccount?.website ?? ""
+            self.inputImage = UIImage(data: currentAccount?.profileImage ?? Data())
+            self.name = currentAccount?.name ?? ""
+        }
+        .alert(isPresented: $showAlertView) {
+            Alert(title: Text(alertTitle),
+                  message: Text(alertMessage),
+                  dismissButton: .cancel())
+        }
     }
+    
+    // MARK: Functions
+    
 }
 
     // MARK: Preview

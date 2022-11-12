@@ -30,6 +30,10 @@ struct SignupView: View {
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.userSince, ascending: true)], animation: .default)
+    private var savedAccounts: FetchedResults<Account>
+    
     private let generator = UISelectionFeedbackGenerator()
     
         // MARK: View
@@ -144,12 +148,41 @@ struct SignupView: View {
                         generator.selectionChanged()
                         signup()
                     }
+                    // Pasar a Profile si ya ha ingresado
                     .onAppear() {
                         Auth.auth()
                             .addStateDidChangeListener { auth, user in
-                                if user != nil {
-                                    showProfileView.toggle()
+                                if let currentUser = user {
+                                    if savedAccounts.count == 0 {
+                                        // Añadir datos a Core Data
+                                        let userDataToSave = Account(context: viewContext)
+                                        userDataToSave.name = currentUser.displayName
+                                        userDataToSave.bio = nil
+                                        userDataToSave.userID = currentUser.uid
+                                        userDataToSave.numberOfCertificates = 0
+                                        userDataToSave.proMember = false
+                                        userDataToSave.twitter = nil
+                                        userDataToSave.website = nil
+                                        userDataToSave.profileImage = nil
+                                        userDataToSave.userSince = Date()
+                                        
+                                        do {
+                                            try viewContext.save()
+                                            DispatchQueue.main.async {
+                                                showProfileView.toggle()
+                                            }
+                                        } catch let error {
+                                            alertTitle = "No fue posible crear la cuenta"
+                                            alertMessage = error.localizedDescription
+                                            showAlertView.toggle()
+                                        }
+                                    } else {
+                                        showProfileView.toggle()
+                                    }
                                 }
+//                                if user != nil {
+//                                    showProfileView.toggle()
+//                                }
                             }
                     }
                     
@@ -167,8 +200,8 @@ struct SignupView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         if !signupToggle {
                             Button {
-                                    //                                print(" Enviar correo para restaurar contraseña")
-                                
+                                print(" Enviar correo para restaurar contraseña")
+                                sendPasswordResetEmail()
                             } label: {
                                 HStack(spacing: 4) {
                                     Text("¿Olvidó su contraseña?")
@@ -250,6 +283,8 @@ struct SignupView: View {
         } // ZStack
         .fullScreenCover(isPresented: $showProfileView) {
             ProfileView()
+            // para leer los daos en ProfileView
+                .environment(\.managedObjectContext, self.viewContext)
         }
     }
     
@@ -303,7 +338,7 @@ struct SignupView: View {
     // MARK: Preview
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SignupView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        SignupView().environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
     }
 }
 

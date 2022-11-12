@@ -7,12 +7,25 @@
 
 import SwiftUI
 import FirebaseAuth
+import CoreData
 
 struct ProfileView: View {
     // MARK: Properties
     @Environment(\.dismiss) private var dismiss
     
     @State private var showSettingsView = false
+    
+    @State private var showAlertView = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    
+    @State private var updater = true
+    
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.userSince, ascending: true)], predicate: NSPredicate(format: "userID = %@", Auth.auth().currentUser!.uid), animation: .default)
+    private var savedAccounts: FetchedResults<Account>
+    
+    @State private var currentAccount: Account?
     
     // MARK: View
     var body: some View {
@@ -26,22 +39,24 @@ struct ProfileView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(spacing: 16) {
                         // Foto de perfil
-//                        ZStack {
-//                            Circle()
-//                                .foregroundColor(Color("pink-gradient-1"))
-//                                .frame(width: 66, height: 66, alignment: .center)
-//
-//                            Image(systemName: "person.fill")
-//                                .foregroundColor(.white)
-//                                .font(.system(size: 25, weight: .medium, design: .rounded))
-//                        } // ZStack foto
-//                        .frame(width: 66, height: 66, alignment: .center)
-                        
-                        GradiantProfilePictureView(profilePicture: UIImage(named: "Profile")!)
-                            .frame(width: 66, height: 66)
+                        if currentAccount?.profileImage != nil {
+                            GradiantProfilePictureView(profilePicture: UIImage(data: currentAccount!.profileImage!)!)
+                                .frame(width: 66, height: 66)
+                        } else {
+                            ZStack {
+                                Circle()
+                                    .foregroundColor(Color("pink-gradient-1"))
+                                    .frame(width: 66, height: 66, alignment: .center)
+    
+                                Image(systemName: "person.fill")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 25, weight: .medium, design: .rounded))
+                            } // ZStack foto
+                            .frame(width: 66, height: 66, alignment: .center)
+                        }
                         
                         VStack(alignment: .leading) {
-                            Text("Juan Carlos Pazos")
+                            Text(currentAccount?.name ?? "Sin nombre")
                                 .foregroundColor(.white)
                                 .font(.title2)
                                 .bold()
@@ -65,31 +80,37 @@ struct ProfileView: View {
                         .frame(height: 1)
                         .foregroundColor(.white.opacity(0.1))
                     
-                    Text("Instructor en IT formación")
+                    Text(currentAccount?.bio ?? "No bio")
                         .foregroundColor(.white)
                         .font(.title2.bold())
                     
-                    Label("Tiene 10 certificados desde Diciembre 2021", systemImage: "calendar")
-                        .foregroundColor(.white.opacity(0.6))
-                        .font(.footnote)
+                    if currentAccount?.numberOfCertificates != 0 {
+                        Label("Tiene \(currentAccount?.numberOfCertificates ?? 0) certificados desde \(currentAccount?.userSince ?? Date())", systemImage: "calendar")
+                            .foregroundColor(.white.opacity(0.6))
+                            .font(.footnote)
+                    }
                     
                     Rectangle()
                         .frame(height: 1)
                         .foregroundColor(.white.opacity(0.1))
                     
                     HStack(spacing: 16) {
-                        Image("Twitter")
-                            .resizable()
-                            .foregroundColor(.white.opacity(0.6))
-                            .frame(width: 24, height: 24, alignment: .center)
+                        if currentAccount?.twitter != nil {
+                            Image("Twitter")
+                                .resizable()
+                                .foregroundColor(.white.opacity(0.6))
+                                .frame(width: 24, height: 24, alignment: .center)
+                        }
                         
-                        Image(systemName: "link")
-                            .foregroundColor(.white.opacity(0.6))
-                            .font(.system(size: 17, weight: .semibold, design: .rounded))
-                        
-                        Text("itformacion.com")
-                            .foregroundColor(.white.opacity(0.6))
-                            .font(.footnote)
+                        if currentAccount?.website != nil {
+                            Image(systemName: "link")
+                                .foregroundColor(.white.opacity(0.6))
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            
+                            Text(currentAccount?.website ?? "Sin website")
+                                .foregroundColor(.white.opacity(0.6))
+                                .font(.footnote)
+                        }
                     } // HStack botom
                 } // VStack contenido
                 .padding(16)
@@ -145,9 +166,44 @@ struct ProfileView: View {
             }
             .padding(.bottom, 64)
         } // ZStack background
-        .colorScheme(.dark)
+        .colorScheme(updater ? .dark : .dark) // forzar redibujar pantalla
         .sheet(isPresented: $showSettingsView) {
             SettingsView()
+                .environment(\.managedObjectContext, self.viewContext)
+            // para forzar redibujar pantalla
+                .onDisappear() {
+                    currentAccount = savedAccounts.first!
+                    updater.toggle()
+                }
+        }
+        .onAppear() {
+            currentAccount = savedAccounts.first
+            
+            if currentAccount == nil {
+                let userDataToSave = Account(context: viewContext)
+                userDataToSave.name = Auth.auth().currentUser!.displayName
+                userDataToSave.bio = nil
+                userDataToSave.userID = Auth.auth().currentUser!.uid
+                userDataToSave.numberOfCertificates = 0
+                userDataToSave.proMember = false
+                userDataToSave.twitter = nil
+                userDataToSave.website = nil
+                userDataToSave.profileImage = nil
+                userDataToSave.userSince = Date()
+                
+                do {
+                    try viewContext.save()
+                } catch let error {
+                    alertTitle = "No fue posible crear la cuenta"
+                    alertMessage = error.localizedDescription
+                    showAlertView.toggle()
+                }
+            }
+        }
+        .alert(isPresented: $showAlertView) {
+            Alert(title: Text(alertTitle),
+                  message: Text(alertMessage),
+                  dismissButton: .cancel())
         }
     }
     
