@@ -12,6 +12,8 @@ struct ProfileView: View {
     // MARK: Properties
     @Environment(\.dismiss) private var dismiss
     
+    @State private var showSettingsView = false
+    
     // MARK: View
     var body: some View {
         ZStack {
@@ -53,9 +55,9 @@ struct ProfileView: View {
                         
                         // MARK: - Button para settings
                         Button {
-                            print("Pasar a settings")
+                            showSettingsView.toggle()
                         } label: {
-                            TextfieldIcon(iconName: "gearshape.fill", currentlyEditing: .constant(true))
+                            TextfieldIcon(iconName: "gearshape.fill", currentlyEditing: .constant(true), passedImage: .constant(nil))
                         }
                     } // HStack
                     
@@ -144,6 +146,9 @@ struct ProfileView: View {
             .padding(.bottom, 64)
         } // ZStack background
         .colorScheme(.dark)
+        .sheet(isPresented: $showSettingsView) {
+            SettingsView()
+        }
     }
     
     // MARK: Functions

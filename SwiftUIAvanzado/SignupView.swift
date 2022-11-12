@@ -59,7 +59,7 @@ struct SignupView: View {
                     
                         // MARK: - Input Email
                     HStack(spacing: 12) {
-                        TextfieldIcon(iconName: "envelope.open.fill", currentlyEditing: $editingEmailTextfield)
+                        TextfieldIcon(iconName: "envelope.open.fill", currentlyEditing: $editingEmailTextfield, passedImage: .constant(nil))
                             /// Permite ejecutar la animación
                             .scaleEffect(emailIconBounce ? 1.2 : 1.0)
                         
@@ -100,7 +100,7 @@ struct SignupView: View {
                     
                         // MARK: - Input Password
                     HStack(spacing: 12) {
-                        TextfieldIcon(iconName: "key.fill", currentlyEditing: $editingPasswordTextfield)
+                        TextfieldIcon(iconName: "key.fill", currentlyEditing: $editingPasswordTextfield, passedImage: .constant(nil))
                             .scaleEffect(passwordIconBounce ? 1.2 : 1.0)
                         
                         SecureField("Password", text: $password)

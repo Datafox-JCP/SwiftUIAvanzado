@@ -12,6 +12,7 @@ struct TextfieldIcon: View {
     var iconName: String
     
     @Binding var currentlyEditing: Bool
+    @Binding var passedImage: UIImage?
     
     @State private var colorAngle = 0.0
     
@@ -56,9 +57,17 @@ struct TextfieldIcon: View {
                     .stroke(Color.white, lineWidth: 1)
                     .blendMode(.overlay)
                 
-                Image(systemName: iconName)
-                    .gradientForeground(colors: [Color("pink-gradient-1"), Color("pink-gradient-2")])
-                    .font(.system(size: 17, weight: .medium))
+                if passedImage != nil {
+                    Image(uiImage: passedImage!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 28, height: 28, alignment: .center)
+                        .cornerRadius(8)
+                } else {
+                    Image(systemName: iconName)
+                        .gradientForeground(colors: [Color("pink-gradient-1"), Color("pink-gradient-2")])
+                        .font(.system(size: 17, weight: .medium))
+                }
             } // ZStack
         )
         .frame(width: 36, height: 36, alignment: .center)
@@ -69,7 +78,7 @@ struct TextfieldIcon: View {
 // MARK: Preview
 struct TextfieldIcon_Previews: PreviewProvider {
     static var previews: some View {
-        TextfieldIcon(iconName: "key.fill", currentlyEditing: .constant(true))
+        TextfieldIcon(iconName: "key.fill", currentlyEditing: .constant(true), passedImage: .constant(nil))
         
     }
 }

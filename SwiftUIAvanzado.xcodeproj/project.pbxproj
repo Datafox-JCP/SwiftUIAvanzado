@@ -21,6 +21,8 @@
 		C646855C2919F19D0068A9EA /* VisualEffectBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = C646855A2919F19D0068A9EA /* VisualEffectBlur.swift */; };
 		C646855D2919F19D0068A9EA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C646855B2919F19D0068A9EA /* ImagePicker.swift */; };
 		C6B14710291E87E1008CC283 /* GradiantProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B1470F291E87E1008CC283 /* GradiantProfilePictureView.swift */; };
+		C6B14712291EE8B0008CC283 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B14711291EE8B0008CC283 /* SettingsView.swift */; };
+		C6B14716291F15DD008CC283 /* GradiantTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B14715291F15DD008CC283 /* GradiantTextField.swift */; };
 		C6BECD84291A99D400831A5E /* GradientText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BECD83291A99D400831A5E /* GradientText.swift */; };
 		C6BECD86291A9A4100831A5E /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BECD85291A9A4100831A5E /* GradientButton.swift */; };
 		C6BECD88291A9B1800831A5E /* TextfieldIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BECD87291A9B1800831A5E /* TextfieldIcon.swift */; };
@@ -42,6 +44,8 @@
 		C646855A2919F19D0068A9EA /* VisualEffectBlur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffectBlur.swift; sourceTree = "<group>"; };
 		C646855B2919F19D0068A9EA /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		C6B1470F291E87E1008CC283 /* GradiantProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradiantProfilePictureView.swift; sourceTree = "<group>"; };
+		C6B14711291EE8B0008CC283 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C6B14715291F15DD008CC283 /* GradiantTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradiantTextField.swift; sourceTree = "<group>"; };
 		C6BECD83291A99D400831A5E /* GradientText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientText.swift; sourceTree = "<group>"; };
 		C6BECD85291A9A4100831A5E /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
 		C6BECD87291A9B1800831A5E /* TextfieldIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldIcon.swift; sourceTree = "<group>"; };
@@ -84,6 +88,7 @@
 				C6109BB1291B3704008DD9E8 /* GoogleService-Info.plist */,
 				C64685472919EE4B0068A9EA /* SignupView.swift */,
 				C6109BB3291B4024008DD9E8 /* ProfileView.swift */,
+				C6B14711291EE8B0008CC283 /* SettingsView.swift */,
 				C60F053B291BEE4D0023592C /* SignInWithAppleButton.swift */,
 				C60F053D291C2CA40023592C /* SigInWithAppleObject.swift */,
 				C64685492919EE4D0068A9EA /* Assets.xcassets */,
@@ -119,6 +124,7 @@
 				C6BECD85291A9A4100831A5E /* GradientButton.swift */,
 				C6BECD87291A9B1800831A5E /* TextfieldIcon.swift */,
 				C6B1470F291E87E1008CC283 /* GradiantProfilePictureView.swift */,
+				C6B14715291F15DD008CC283 /* GradiantTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -203,10 +209,12 @@
 				C646855C2919F19D0068A9EA /* VisualEffectBlur.swift in Sources */,
 				C6BECD86291A9A4100831A5E /* GradientButton.swift in Sources */,
 				C6109BB4291B4024008DD9E8 /* ProfileView.swift in Sources */,
+				C6B14716291F15DD008CC283 /* GradiantTextField.swift in Sources */,
 				C6BECD84291A99D400831A5E /* GradientText.swift in Sources */,
 				C60F053E291C2CA40023592C /* SigInWithAppleObject.swift in Sources */,
 				C6BECD88291A9B1800831A5E /* TextfieldIcon.swift in Sources */,
 				C646854F2919EE4D0068A9EA /* Persistence.swift in Sources */,
+				C6B14712291EE8B0008CC283 /* SettingsView.swift in Sources */,
 				C6B14710291E87E1008CC283 /* GradiantProfilePictureView.swift in Sources */,
 				C64685482919EE4B0068A9EA /* SignupView.swift in Sources */,
 				C646855D2919F19D0068A9EA /* ImagePicker.swift in Sources */,
